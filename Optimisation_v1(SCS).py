@@ -22,7 +22,7 @@ def divtermBB84(v1, v2, v3, perr, gamma):
 # -----------------------
 # Convex optimization: multi-point linear underestimator
 # -----------------------
-def htermBB84_convex(hatdelt, gamma, qberthresh, n_ref_v=20, n_ref_p=20):
+def htermBB84(hatdelt, gamma, qberthresh, n_v, n_p):
     bdelt = hatdelt / (1 + hatdelt)
 
     # CVXPY variables
@@ -35,10 +35,20 @@ def htermBB84_convex(hatdelt, gamma, qberthresh, n_ref_v=20, n_ref_p=20):
     # ------------------------
     # Multi-point linear underestimator
     # ------------------------
-    v_ref_grid = np.linspace(0, gamma*qberthresh, n_ref_v)
-    p_ref_grid = np.linspace(1e-12, qberthresh, n_ref_p)
+    v_ref_grid = np.linspace(1e-12, gamma, n_v)
+    p_ref_grid = np.linspace(1e-12, qberthresh, n_p)
 
-    constraints = []
+    # ------------------------
+    # Bounds
+    # ------------------------
+    constraints = [
+        v1 >= 1e-12,
+        v2 >= 1e-12,
+        v2 <= qberthresh,
+        perr >= 1e-12,
+        perr <= 1 - 1e-12,
+        v3 >= 1e-12,
+    ]
 
     for vi in v_ref_grid:
         for pi in p_ref_grid:
@@ -47,7 +57,8 @@ def htermBB84_convex(hatdelt, gamma, qberthresh, n_ref_v=20, n_ref_p=20):
 
             # Partial derivatives
             df_dv = -(1 - (1/bdelt) * np.log2((1-pi)**(1-bdelt) + pi**(1-bdelt)))
-            df_dp = (1 - vi) * (-1/(bdelt*np.log(2))) * (-(1-bdelt)*(1-pi)**(-bdelt) + (1-bdelt)*pi**(-bdelt))
+            h = (1-pi)**(1-bdelt) + pi**(1-bdelt)
+            df_dp = (1 - vi) * (-1/(bdelt*np.log(2))) * (-(1-bdelt)*(1-pi)**(-bdelt) + (1-bdelt)*pi**(-bdelt))/h
 
             # Linear underestimator only (no quadratic)
             t_constraint = f0 + df_dv*(gamma*v1 + gamma*v2 - vi) + df_dp*(perr - pi)
@@ -60,32 +71,26 @@ def htermBB84_convex(hatdelt, gamma, qberthresh, n_ref_v=20, n_ref_p=20):
     objective = cp.Minimize(t + term2)
 
     # ------------------------
-    # Bounds
-    # ------------------------
-    constraints += [
-        v1 >= 1e-12,
-        v2 >= 1e-12,
-        v2 <= qberthresh,
-        perr >= 1e-12,
-        perr <= 1 - 1e-12,
-        v3 >= 1e-12,
-    ]
-
-    # ------------------------
     # Solve
     # ------------------------
     prob = cp.Problem(objective, constraints)
-    prob.solve(solver=cp.SCS, eps=1e-8, max_iters=500_000, verbose=False)
+    prob.solve(
+    solver=cp.SCS,
+    max_iters=50000,
+    verbose = True
+    )
+
+
 
     return prob.value, (v1.value, v2.value, perr.value)
 
 # -----------------------
 # Key rate function
 # -----------------------
-def rateBB84(aldelt, gamma, n, qberthresh, epsEV, epsPA):
+def rateBB84(aldelt, gamma, n, qberthresh, epsEV, epsPA, n_v, n_p):
     hatdelt = aldelt / (1 - aldelt)
 
-    sol_val, sol = htermBB84_convex(hatdelt, gamma, qberthresh)
+    sol_val, sol = htermBB84(hatdelt, gamma, qberthresh, n_v, n_p)
 
     lambdaEC = 1.1 * (1 - gamma) * binh(qberthresh)
 
@@ -108,6 +113,8 @@ def rateBB84(aldelt, gamma, n, qberthresh, epsEV, epsPA):
 nvals = np.array([10**j for j in range(3, 9)])
 aldeltvals = 10 ** (-np.array([0.7, 1.4, 2.1, 2.7, 3.4, 4.0]))
 gammavals  = 10 ** (-np.array([0.4, 0.8, 1.2, 1.5, 1.9, 2.2]))
+n_ref_v = 9     #number of reference point for v
+n_ref_p = 8     #number of reference point for p
 
 # -----------------------
 # Compute data points
@@ -125,7 +132,7 @@ def compute_datapoints():
         epsEV = (aldelt * esound) / (1 + 2 * aldelt)
         epsPA = esound - epsEV
 
-        rate, sol = rateBB84(aldelt, gamma, n, qberthresh, epsEV, epsPA)
+        rate, sol = rateBB84(aldelt, gamma, n, qberthresh, epsEV, epsPA, n_ref_v, n_ref_p)
         datapts.append((n, rate))
 
     return np.array(datapts)
@@ -136,12 +143,15 @@ def compute_datapoints():
 datapts = compute_datapoints()
 n_vals = datapts[:, 0]
 rates  = datapts[:, 1]
+rates_reference = [0.0302146, 0.383833, 0.52904, 0.592656, 0.621459, 0.634525]
 
 plt.figure()
-plt.plot(n_vals, rates, marker='o')
+plt.plot(n_vals, rates, marker='o', color='b', label="SCS")
+plt.plot(n_vals, rates_reference, marker='o', color='r', label="DE")
+plt.legend()
 plt.xscale('log')
 plt.ylim(0, 0.7)
 plt.xlabel('n')
-plt.ylabel('Key rate')
+plt.ylabel('Key Rate')
 plt.grid(True)
 plt.show()
