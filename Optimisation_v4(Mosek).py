@@ -12,32 +12,30 @@ def binh(p):
 # -----------------------
 # KL divergence term
 # -----------------------
-def divtermBB84(v1, v2, v3, perr, gamma):
+def divtermBB84(v1, v2, perr, gamma):
     return (
         cp.kl_div(gamma*v1, gamma*(1-perr))
       + cp.kl_div(gamma*v2, gamma*perr)
-      + cp.kl_div(v3, 1-gamma)
+      + cp.kl_div(1-gamma*(v1+v2), 1-gamma)
     ) / np.log(2)
 
 # -----------------------
 # Convex optimization: multi-point linear underestimator
 # -----------------------
 
-def htermBB84(hatdelt, gamma, qberthresh, n_v, n_p):
+def htermBB84(hatdelt, gamma, qberthresh, n_p):
     bdelt = hatdelt / (1 + hatdelt)
 
     # CVXPY variables
     v1   = cp.Variable(nonneg=True)
     v2   = cp.Variable(nonneg=True)
     perr = cp.Variable()
-    v3   = 1 - gamma*v1 - gamma*v2
     t    = cp.Variable()  # epigraph for the product term
 
     # ------------------------
-    # Coarse grids
+    # Tangent Points
     # ------------------------
-    v_sum_grid = np.linspace(0, gamma*qberthresh, n_v)  # gamma*v1 + gamma*v2
-    p_grid     = np.linspace(1e-12, qberthresh, n_p)   # perr
+    p_grid     = np.linspace(1e-12, 1 - 1e-12, n_p)   # perr
 
     # ------------------------
     # Base constraints
@@ -48,47 +46,28 @@ def htermBB84(hatdelt, gamma, qberthresh, n_v, n_p):
         v2 <= qberthresh,
         perr >= 1e-12,
         perr <= 1 - 1e-12,
-        v3 >= 1e-12
+        1 - gamma*v1 - gamma*v2 >= 1e-12
     ]
 
     # ------------------------
-    # Coarse secant planes
+    # Tangent Lines
     # ------------------------
-    for i in range(n_v - 1):
-        for j in range(n_p - 1):
-            # Rectangle corners
-            v0, v1_grid = v_sum_grid[i], v_sum_grid[i+1]
-            p0, p1_grid = p_grid[j], p_grid[j+1]
+    for pi in p_grid:
+        # Value at reference point
+        h = (1-pi)**(1-bdelt) + pi**(1-bdelt)
+        f_pi = (1 - gamma) * (1 - (1 / bdelt) * np.log2(h))
 
-            # Evaluate function at 4 corners
-            f00 = (1 - v0)*(1 - (1/bdelt)*np.log2((1-p0)**(1-bdelt) + p0**(1-bdelt)))
-            f01 = (1 - v0)*(1 - (1/bdelt)*np.log2((1-p1_grid)**(1-bdelt) + p1_grid**(1-bdelt)))
-            f10 = (1 - v1_grid)*(1 - (1/bdelt)*np.log2((1-p0)**(1-bdelt) + p0**(1-bdelt)))
-            f11 = (1 - v1_grid)*(1 - (1/bdelt)*np.log2((1-p1_grid)**(1-bdelt) + p1_grid**(1-bdelt)))
+        # Gradient at that point
+        df_dp = (1 - gamma) * (-1/(bdelt*np.log(2))) * (-(1-bdelt)*((1-pi)**(-bdelt)) + (1-bdelt)*(pi**(-bdelt)))/h
 
-            # Fit plane t = a*v_sum + b*perr + c
-            # Solve linear system for coefficients [a, b, c]
-            A = np.array([
-                [v0, p0, 1],
-                [v0, p1_grid, 1],
-                [v1_grid, p0, 1],
-                [v1_grid, p1_grid, 1]
-            ])
-            F = np.array([f00, f01, f10, f11])
-
-            # Least squares fit (overdetermined for 4 points) -> secant plane
-            coeffs, _, _, _ = np.linalg.lstsq(A, F, rcond=None)
-            a, b, c = coeffs
-
-            # Epigraph constraint
-            v_sum = gamma*v1 + gamma*v2
-            t_constraint = a*v_sum + b*perr + c
-            constraints.append(t >= t_constraint)
+        # Epigraph constraint
+        t_constraint = f_pi + (perr-pi)*df_dp
+        constraints.append(t >= t_constraint)
 
     # ------------------------
     # KL divergence term
     # ------------------------
-    term2 = (1/hatdelt) * divtermBB84(v1, v2, v3, perr, gamma)
+    term2 = (1/hatdelt) * divtermBB84(v1, v2, perr, gamma)
 
     # ------------------------
     # Objective
@@ -114,10 +93,10 @@ def htermBB84(hatdelt, gamma, qberthresh, n_v, n_p):
 # -----------------------
 # Key rate function
 # -----------------------
-def rateBB84(aldelt, gamma, n, qberthresh, epsEV, epsPA, n_v, n_p):
+def rateBB84(aldelt, gamma, n, qberthresh, epsEV, epsPA, n_p):
     hatdelt = aldelt / (1 - aldelt)
 
-    sol_val, sol = htermBB84(hatdelt, gamma, qberthresh, n_v, n_p)
+    sol_val, sol = htermBB84(hatdelt, gamma, qberthresh, n_p)
 
     lambdaEC = 1.1 * (1 - gamma) * binh(qberthresh)
 
@@ -140,8 +119,7 @@ def rateBB84(aldelt, gamma, n, qberthresh, epsEV, epsPA, n_v, n_p):
 nvals = np.array([10**j for j in range(3, 9)])
 aldeltvals = 10 ** (-np.array([0.7, 1.4, 2.1, 2.7, 3.4, 4.0]))
 gammavals  = 10 ** (-np.array([0.4, 0.8, 1.2, 1.5, 1.9, 2.2]))
-n_ref_v = 4     #number of reference point for v
-n_ref_p = 4     #number of reference point for p
+n_ref_p = 100     #number of tangent point for p
 
 # -----------------------
 # Compute data points
@@ -159,7 +137,7 @@ def compute_datapoints():
         epsEV = (aldelt * esound) / (1 + 2 * aldelt)
         epsPA = esound - epsEV
 
-        rate, sol = rateBB84(aldelt, gamma, n, qberthresh, epsEV, epsPA, n_ref_v, n_ref_p)
+        rate, sol = rateBB84(aldelt, gamma, n, qberthresh, epsEV, epsPA, n_ref_p)
         datapts.append((n, rate))
 
     return np.array(datapts)
