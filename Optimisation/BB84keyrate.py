@@ -69,7 +69,7 @@ def compute_datapoints(n_range, qberthresh, esound):
     datapts = []
 
     for n in n_range:
-        rate, sol = rateBB84(n, qberthresh, esound, n_ref_p, n_ref_aldelt, n_ref_gamma)
+        rate, sol = rateBB84(n, qberthresh, esound, n_ref_p, n_sam_aldelt, n_sam_gamma)
         datapts.append((n, rate))
 
     return np.array(datapts)
@@ -80,9 +80,9 @@ def compute_datapoints(n_range, qberthresh, esound):
 nvals = np.array([10**j for j in range(3, 9)])
 qberthresh = 0.025
 esound = 1e-10
-n_ref_p = 100     #number of tangent point for p
-n_ref_gamma = 25
-n_ref_aldelt = 10
+n_ref_p = 100     #number of tangent lines for underestimator
+n_sam_gamma = 100  #number of sample points for gamma (minimally 25 to attain better results than original)
+n_sam_aldelt = 100 #number of sample points for aldelt (minimally 40 to attain better results than original)
 
 # -----------------------
 # Run computation
@@ -90,9 +90,12 @@ n_ref_aldelt = 10
 datapts = compute_datapoints(nvals, qberthresh, esound)
 n_vals = datapts[:, 0]
 rates  = datapts[:, 1]
+rates_reference = [0.0302146, 0.383833, 0.52904, 0.592656, 0.621459, 0.634525]
 
 plt.figure()
-plt.plot(n_vals, rates, marker='o', color='b')
+plt.plot(n_vals, rates, marker='o', color='b', label="new")
+plt.plot(n_vals, rates_reference, marker='o', color='r', label="original")
+plt.legend()
 plt.xscale('log')
 plt.ylim(0, 0.7)
 plt.xlabel('n')
