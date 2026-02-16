@@ -76,6 +76,7 @@ def compute_datapoints(n_range, qberthresh, esound):
         gamma_list.append(opm_gamma)
         aldelt_list.append(opm_aldelt)
         rate_list.append(rate)
+        print(f"Computation completed for n = {n}")
     
     data = pd.DataFrame({
         "n": n_range,
@@ -93,8 +94,8 @@ nvals = np.array([10**j for j in range(3, 9)])
 qberthresh = 0.025
 esound = 1e-10
 n_ref_p = 100     #number of tangent lines for underestimator
-n_sam_gamma = 10  #number of sample points for gamma (minimally 25 to attain better results than original)
-n_sam_aldelt = 10 #number of sample points for aldelt (minimally 40 to attain better results than original)
+n_sam_gamma = 100  #number of sample points for gamma (minimally 25 to attain better results than original)
+n_sam_aldelt = 100 #number of sample points for aldelt (minimally 40 to attain better results than original)
 file_path = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/results.csv"
 # -----------------------
 # Run computation
