@@ -1,6 +1,7 @@
 import numpy as np
 import cvxpy as cp
 import matplotlib.pyplot as plt
+from scipy.stats import binom
 
 # -----------------------
 # Binary entropy (numeric)
@@ -38,11 +39,18 @@ def divterm(v,p):
       + cp.kl_div(v3, p3)
     ) / np.log(2)
 
+def find_delta(n, p, alpha=0.01):
+    # Find quantile
+    k = binom.ppf(alpha, n, p)
+    
+    delta = p - k/n
+    return delta
+
 # -----------------------
 # Convex optimization: multi-point linear underestimator
 # -----------------------
 
-def hterm(hatdelt, gamma, qberthresh, n_p):
+def hterm(n, hatdelt, gamma, qberthresh, n_p):
     """
     Function computes the worst-case entropy-related term appearing in the finite-sized keyrate bound for EB-BB84 by carrying out convex optimisation to return the optimal value of the convex security bound from Eqn 145, along with the optimiser-chosen parameters that realise the worst-case eavesdropping scenario.
 
@@ -57,6 +65,7 @@ def hterm(hatdelt, gamma, qberthresh, n_p):
     """
 
     bdelt = hatdelt / (1 + hatdelt)
+    delta = find_delta(n, 1 - gamma)
 
     # CVXPY variables
     v1   = cp.Variable(nonneg=True)
@@ -87,10 +96,10 @@ def hterm(hatdelt, gamma, qberthresh, n_p):
     for pi in p_grid:
         # Value at reference point
         h = (1-pi)**(1-bdelt) + pi**(1-bdelt)
-        f_pi = (1 - gamma) * (1 - (1 / bdelt) * np.log2(h))
+        f_pi = (1 - gamma - delta) * (1 - (1 / bdelt) * np.log2(h))
 
         # Gradient at that point
-        df_dp = (1 - gamma) * (-1/(bdelt*np.log(2))) * (-(1-bdelt)*((1-pi)**(-bdelt)) + (1-bdelt)*(pi**(-bdelt)))/h
+        df_dp = (1 - gamma - delta) * (-1/(bdelt*np.log(2))) * (-(1-bdelt)*((1-pi)**(-bdelt)) + (1-bdelt)*(pi**(-bdelt)))/h
 
         # Epigraph constraint
         t_constraint = f_pi + (perr-pi)*df_dp
