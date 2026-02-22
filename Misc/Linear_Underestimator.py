@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 gamma   = 0.1
 hatdelt = 0.05
 bdelt   = hatdelt / (1 + hatdelt)
-n_ref_p = 100     #number of tangent point for p
+n_ref_p = 0     #number of tangent point for p
 
 # Domain
 p = np.linspace(1e-6, 1, 500)
@@ -55,7 +55,7 @@ plt.xlabel("p")
 plt.ylabel("f(p)")
 plt.title("Original Function and Linear (Tangent) Underestimators")
 plt.ylim(-0.2, 1)
-plt.legend()
+#plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
