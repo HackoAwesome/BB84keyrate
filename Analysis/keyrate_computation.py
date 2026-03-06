@@ -38,12 +38,12 @@ def compute_datapoints(n_range, qberthresh, esound):
 # -----------------------
 # Parameters
 # -----------------------
-nvals = np.array([10**j for j in range(3, 9)])
+nvals = np.array([10**j for j in range(3, 11)])
 qberthresh = 0.025
 esound = 1e-10
 n_ref_p = 100     #number of tangent lines for underestimator
-n_sam_gamma = 10  #number of sample points for gamma (minimally 25 to attain better results than original)
-n_sam_aldelt = 10 #number of sample points for aldelt (minimally 40 to attain better results than original)
+n_sam_gamma = 50  #number of sample points for gamma (original used 25)
+n_sam_aldelt = 50 #number of sample points for aldelt (original used 40)
 file_path = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/results.csv"
 # -----------------------
 # Run computation
@@ -60,11 +60,12 @@ datapts.to_csv(file_path, index=False)
 # -----------------------
 n_vals = datapts["n"]
 rates  = datapts["rate"]
+n_reference = np.array([10**j for j in range(3, 9)])
 rates_reference = [0.0302146, 0.383833, 0.52904, 0.592656, 0.621459, 0.634525]
 
 plt.figure()
 plt.plot(n_vals, rates, marker='o', color='b', label="new")
-plt.plot(n_vals, rates_reference, marker='o', color='r', label="original")
+plt.plot(n_reference, rates_reference, marker='o', color='r', label="original")
 plt.legend()
 plt.xscale('log')
 plt.ylim(0, 0.7)
