@@ -36,7 +36,7 @@ nval = 10**6
 qberthresh = 0.025
 esound = 1e-10
 n_ref_p = 100     #number of tangent lines for underestimator
-n_range = np.arange(0, 40, 5)  #size of grid (nxn)
+n_range = np.arange(0, 100, 10)  #size of grid (nxn)
 file_path = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/grid_converge_result.csv"
 # -----------------------
 # Run computation
@@ -55,7 +55,7 @@ n_vals = datapts["size of grid"]
 rates  = datapts["rate"]
 
 plt.figure()
-plt.plot(n_vals, rates, marker='o', color='b', label="new")
+plt.plot(n_vals, rates, marker='o', color='b')
 plt.legend()
 plt.xlabel('Size of Grid')
 plt.ylabel('Key Rate')

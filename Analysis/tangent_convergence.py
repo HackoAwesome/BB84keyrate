@@ -56,7 +56,7 @@ n_vals = datapts["number of tangent"]
 rates  = datapts["rate"]
 
 plt.figure()
-plt.plot(n_vals, rates, marker='o', color='b', label="new")
+plt.plot(n_vals, rates, marker='o', color='b')
 plt.legend()
 plt.xlabel('Number of Tangents')
 plt.ylabel('Key Rate')
