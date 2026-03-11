@@ -130,4 +130,4 @@ def hterm(n, hatdelt, gamma, qberthresh, n_p):
         }
     )
 
-    return prob.value, (v1.value, v2.value, perr.value)
+    return prob.value, (v1.value, v2.value, perr.value), prob.status

@@ -13,7 +13,7 @@ def keyrate(aldelt, gamma, n, qberthresh, esound, n_p):
 
     hatdelt = aldelt / (1 - aldelt)
 
-    sol_val, sol = hterm(n, hatdelt, gamma, qberthresh, n_p)
+    sol_val, sol, status = hterm(n, hatdelt, gamma, qberthresh, n_p)
 
     lambdaEC = 1.1 * (1 - gamma) * binh(qberthresh)
     epsEV = (aldelt * esound) / (1 + 2 * aldelt)
@@ -29,7 +29,7 @@ def keyrate(aldelt, gamma, n, qberthresh, esound, n_p):
             - 2
         )
     )
-    return rate
+    return rate, status
 
 def rateBB84(n, qberthresh, esound, n_p, n_aldelt, n_gamma):
     """

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Step 1: Load the CSV file
-file = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/results(40x40).csv"
+file = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/results(100x100).csv"
 data = pd.read_csv(file)
 
 n_reference = np.array([10**j for j in range(3, 9)])

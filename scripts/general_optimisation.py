@@ -13,13 +13,14 @@ def trialanderror(func, grid_x, grid_y):
         progress += 1
         for yi in grid_y:
             try:
-                val = func(xi, yi)
+                val, status = func(xi, yi)
+                if status == "optimal":
+                    val2 = val
             except Exception:
                 # Skip points where the function cannot be evaluated
                 continue
-
-            if np.isfinite(val) and val > best_value:
-                best_value = val
+            if np.isfinite(val2) and val2 > best_value:
+                best_value = val2
                 best_x = xi
                 best_y = yi
         
