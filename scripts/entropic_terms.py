@@ -67,6 +67,8 @@ def hterm(n, hatdelt, gamma, qberthresh, n_p):
     bdelt = hatdelt / (1 + hatdelt)
     delta = find_delta(n, 1 - gamma)
 
+    convergence_criteria = 1e-9 #Tolerance for the solution of the convex optimisation to converge
+
     # CVXPY variables
     v1   = cp.Variable(nonneg=True)
     v2   = cp.Variable(nonneg=True)
@@ -124,9 +126,9 @@ def hterm(n, hatdelt, gamma, qberthresh, n_p):
         solver=cp.MOSEK,
         verbose=False,
         mosek_params={
-            "MSK_DPAR_INTPNT_CO_TOL_PFEAS": 1e-9,
-            "MSK_DPAR_INTPNT_CO_TOL_DFEAS": 1e-9,
-            "MSK_DPAR_INTPNT_CO_TOL_REL_GAP": 1e-9
+            "MSK_DPAR_INTPNT_CO_TOL_PFEAS": convergence_criteria,
+            "MSK_DPAR_INTPNT_CO_TOL_DFEAS": convergence_criteria,
+            "MSK_DPAR_INTPNT_CO_TOL_REL_GAP": convergence_criteria
         }
     )
 

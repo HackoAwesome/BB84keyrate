@@ -16,8 +16,8 @@ grid = data.to_numpy()
 # ---------------------------
 # Separate values and status
 # ---------------------------
-not_optimal_mask = grid == -1
-failed_mask = grid == -2
+not_optimal_mask = grid == 1
+failed_mask = grid == 2
 
 # Keyrate grid (replace invalid values with NaN)
 keyrate = grid.astype(float)

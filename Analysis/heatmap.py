@@ -27,10 +27,10 @@ for i, gamma in enumerate(gamma_range):
         try:
             value, status = keyrate(aldelt, gamma, n, qberthresh, esound, n_p)
             if not np.isfinite(value) or status != "optimal":
-                value = -1 #
+                value = 1
             grid[i, j] = value
         except Exception:
-            grid[i, j] = -2
+            grid[i, j] = 2
 
 grid = np.array(grid)
 

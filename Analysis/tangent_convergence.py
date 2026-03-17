@@ -32,12 +32,12 @@ def compute_datapoints(p_range, qberthresh, esound):
 # -----------------------
 # Parameters
 # -----------------------
-nval = 10**6
+nval = 10**8
 qberthresh = 0.025
 esound = 1e-10
-p_range = np.arange(0, 410, 10)     #number of tangent lines for underestimator
-n_sam_gamma = 10  #number of sample points for gamma (minimally 25 to attain better results than original)
-n_sam_aldelt = 10 #number of sample points for aldelt (minimally 40 to attain better results than original)
+p_range = np.arange(0, 100, 2)     #number of tangent lines for underestimator
+n_sam_gamma = 40  #number of sample points for gamma (minimally 25 to attain better results than original)
+n_sam_aldelt = 40 #number of sample points for aldelt (minimally 40 to attain better results than original)
 file_path = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/tangent_converge_result.csv"
 # -----------------------
 # Run computation
