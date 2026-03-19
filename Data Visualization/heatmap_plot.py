@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from matplotlib.patches import Patch
 
-file = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/heatmap_result(200x200)(8).csv"
+file = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/heatmap_result(200x200)(8)(relax).csv"
 
 # Load CSV
 data = pd.read_csv(file, index_col=0)
