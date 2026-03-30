@@ -211,12 +211,13 @@ rates  = datapts[:, 1]
 rates_reference = [0.0302146, 0.383833, 0.52904, 0.592656, 0.621459, 0.634525]
 
 plt.figure()
-plt.plot(n_vals, rates, marker='o', color='b', label="Mosek")
-plt.plot(n_vals, rates_reference, marker='o', color='r', label="DE")
+plt.plot(n_vals, rates, marker='o', color='b', label="New")
+plt.plot(n_vals, rates_reference, marker='o', color='r', label="Original")
+print(rates)
 plt.legend()
 plt.xscale('log')
 plt.ylim(0, 0.7)
 plt.xlabel('Number of Rounds')
-plt.ylabel('Key Rate')
+plt.ylabel('Keyrate')
 plt.grid(True)
 plt.show()

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Step 1: Load the CSV file
-file = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/results(40x40).csv"
+file = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/results(100x100).csv"
 data = pd.read_csv(file)
 
 n_reference = np.array([10**j for j in range(3, 9)])
@@ -17,10 +17,10 @@ plt.plot(data["n"], data["rate"], marker='o', color='r', label="new")
 plt.legend()
 plt.xscale('log')
 plt.ylim(0, 0.7)
-plt.xlabel('n')
-plt.ylabel('Key Rate')
+plt.xlabel('Number of rounds')
+plt.ylabel('Keyrate')
 plt.grid(True)
-plt.title("Key Rate against n")
+plt.title("Keyrate against n")
 
 # Step 4: Show the graph
 plt.show()
