@@ -51,11 +51,12 @@ for pi in p_grid:
 # Mark tangent points
 #plt.scatter(p_grid, f(p_grid), color='red', zorder=5, label="Reference Points", s=10)
 
-plt.xlabel("p")
-plt.ylabel("f(p)")
+plt.xlabel(r"$\nu (1)$")
+plt.ylabel(r"f($\nu (1)$)")
 plt.title("Original Function and Linear (Tangent) Underestimators")
 plt.ylim(-0.2, 1)
 #plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.savefig("/Users/hayleylim/Desktop/SP3172/100tangentlines.svg")
+plt.show()
