@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 gamma   = 0.1
 hatdelt = 0.05
 bdelt   = hatdelt / (1 + hatdelt)
-n_ref_p = 0     #number of tangent point for p
+n_ref_p = 100    #number of tangent point for p
 
 # Domain
 p = np.linspace(1e-6, 1, 500)
@@ -33,7 +33,7 @@ def df_dp(p):
 # -----------------------
 # Tangent points
 # -----------------------
-p_grid = np.linspace(0, 1, n_ref_p)
+p_grid = np.linspace(0.1, 0.9, n_ref_p)
 
 # -----------------------
 # Plot
@@ -58,4 +58,4 @@ plt.ylim(-0.2, 1)
 #plt.legend()
 plt.grid(True)
 plt.tight_layout()
-plt.show()
+plt.savefig("/Users/hayleylim/Desktop/SP3172/100tangentlines.svg")

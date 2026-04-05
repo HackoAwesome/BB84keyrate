@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from matplotlib.patches import Patch
 
-file = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/heatmap_result(200x200)(8)(relax).csv"
+file = "/Users/hayleylim/Documents/GitHub/BB84keyrate/Data/heatmap_result(200x200)(8)(relax).csv"
 
 # Load CSV
 data = pd.read_csv(file, index_col=0)
@@ -12,6 +12,7 @@ data = pd.read_csv(file, index_col=0)
 gamma_range = data.index.astype(float).to_numpy()
 aldelt_range = data.columns.astype(float).to_numpy()
 grid = data.to_numpy()
+X, Y = np.meshgrid(aldelt_range, gamma_range)
 
 # ---------------------------
 # Separate values and status
@@ -23,6 +24,7 @@ failed_mask = grid == 2
 keyrate = grid.astype(float)
 keyrate[not_optimal_mask] = np.nan
 keyrate[failed_mask] = np.nan
+
 
 # ---------------------------
 # Compute min/max safely
@@ -56,6 +58,16 @@ c = plt.pcolormesh(
     vmax=vmax
 )
 
+
+contours = plt.contour(
+    X, Y, keyrate,
+    levels=10,              # adjust (5–15 is good)
+    colors='white',
+    linewidths=0.8,
+)
+
+plt.clabel(contours, inline=True, fontsize=7)
+
 # ---------------------------
 # Overlay solver statuses
 # ---------------------------
@@ -63,7 +75,7 @@ plt.pcolormesh(
     x_edges,
     y_edges,
     not_optimal_mask,
-    cmap=ListedColormap(["none", "red"]),
+    cmap=ListedColormap(["none", "gray"]),
     shading="auto"
 )
 
@@ -74,6 +86,7 @@ plt.pcolormesh(
     cmap=ListedColormap(["none", "gray"]),
     shading="auto"
 )
+
 
 # ---------------------------
 # Find maximum keyrate
@@ -96,25 +109,34 @@ plt.scatter(
 
 print(f"Aldelt range: {np.min(aldelt_range)} → {np.max(aldelt_range)}")
 
+
 # ---------------------------
 # Plot settings
 # ---------------------------
 plt.xscale("log")
 plt.yscale("log")
 
-plt.xlabel("Alpha Delta")
-plt.ylabel("Gamma")
+plt.xlabel(r"$\Delta \alpha$")
+plt.ylabel(r"$\gamma$")
 plt.title("Keyrate Heatmap for $10^8$ rounds")
 
 plt.colorbar(c, label="Keyrate")
+plt.annotate(
+    f"({max_aldelt:.2e}, {max_gamma:.2e})",
+    (max_aldelt, max_gamma),
+    textcoords="offset points",
+    xytext=(10, 10),
+    ha='left',
+    color='black',
+    bbox=dict(facecolor='white', edgecolor='black', boxstyle='round,pad=0.3')
+)
 
 # Custom legend
 legend_elements = [
-    Patch(facecolor="red", label="Not optimal solution"),
     Patch(facecolor="gray", label="Optimization failed"),
 ]
 
-plt.legend(handles=[*legend_elements, plt.Line2D([],[],marker="*",color="white",
+plt.legend(loc='upper right', bbox_to_anchor=(1.25, 1.15), borderaxespad=0, handles=[*legend_elements, plt.Line2D([],[],marker="*",color="white",
            markeredgecolor="black",linestyle="",label="Max Keyrate")])
 
 plt.show()
