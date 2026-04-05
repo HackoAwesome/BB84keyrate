@@ -32,7 +32,7 @@ def compute_datapoints(n_range, qberthresh, esound):
 # -----------------------
 # Parameters
 # -----------------------
-nval = 10**6
+nval = 10**8
 qberthresh = 0.025
 esound = 1e-10
 n_ref_p = 100     #number of tangent lines for underestimator
