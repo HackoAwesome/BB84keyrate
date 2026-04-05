@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Step 1: Load the CSV file
-file = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/results(100x100).csv"
+file = "/Users/hayleylim/Documents/GitHub/BB84keyrate/Data/results(100x100).csv"
 data = pd.read_csv(file)
 
 y = data["gamma"].values
@@ -76,14 +76,14 @@ plt.xlabel('n')
 plt.ylabel(r'$\gamma$')
 plt.title(r"Optimal $\gamma$ against n")
 
-# ✅ Major + minor gridlines
+# Major + minor gridlines
 plt.grid(which='major', linestyle='-', linewidth=0.7, alpha=0.7)
 plt.grid(which='minor', linestyle='--', linewidth=0.5, alpha=0.5)
 
 # Enable minor ticks explicitly (important for log plots)
 plt.minorticks_on()
 
-# ✅ Add best-fit equation on plot
+# Add best-fit equation on plot
 # Linear equation in log space
 eq_text = (
     r"$\log_{{10}}(\gamma) = {:.3f}\,\log_{{10}}(n) + {:.3f}$".format(slope, intercept)
@@ -99,4 +99,5 @@ plt.text(0.95, 0.95, eq_text,
          horizontalalignment='right',  # aligns the text box to the right
          bbox=dict(boxstyle="round", facecolor="white", alpha=0.85))
 
+plt.savefig("/Users/hayleylim/Desktop/SP3172/gammaplot.svg")
 plt.show()
