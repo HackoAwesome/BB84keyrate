@@ -17,7 +17,7 @@ plt.plot(n_reference, data["rate"]-original, marker='o', color='b')
 
 plt.legend()
 plt.xscale('log')
-plt.xlabel('Number of rounds')
+plt.xlabel('n')
 plt.ylabel('Difference in Keyrate')
 plt.grid(True)
 plt.title("Difference in Keyrate against n")
