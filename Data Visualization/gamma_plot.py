@@ -52,24 +52,51 @@ y_fit = a * x_fit**slope
 # Step 4: Plot data
 #plt.scatter(x, y, marker='o', color='r', label="Data")
 
-# Step 4: Plot data with error bars ONLY (no separate scatter)
-#plt.figure(figsize=(6,5))
+# Plot data with error bars
+plt.figure(figsize=(6,5))
 
 plt.errorbar(x, y, yerr=y_err, fmt='o',
              color='red', ecolor='gray',
              elinewidth=1, capsize=3, markersize=4,
              label="Data")
 
-# Sort x_fit for clean line
-plt.plot(x_fit, y_fit, label=f"Fit: y = {a:.2e} n^{slope:.3f}\n$R^2$ = {r_squared:.4f}")
+# Sort x_fit for clean plotting
+x_fit_sorted = np.sort(x_fit)
+y_fit_sorted = a * x_fit_sorted**slope
 
-# Axes settings
+# Plot fitted curve
+plt.plot(x_fit_sorted, y_fit_sorted, color='blue')
+
+# Log scales
 plt.xscale('log')
 plt.yscale('log')
+
+# Labels and title
 plt.xlabel('n')
 plt.ylabel(r'$\gamma$')
 plt.title(r"Optimal $\gamma$ against n")
-plt.grid()
 
-#plt.legend()
+# ✅ Major + minor gridlines
+plt.grid(which='major', linestyle='-', linewidth=0.7, alpha=0.7)
+plt.grid(which='minor', linestyle='--', linewidth=0.5, alpha=0.5)
+
+# Enable minor ticks explicitly (important for log plots)
+plt.minorticks_on()
+
+# ✅ Add best-fit equation on plot
+# Linear equation in log space
+eq_text = (
+    r"$\log_{{10}}(\gamma) = {:.3f}\,\log_{{10}}(n) + {:.3f}$".format(slope, intercept)
+    + "\n" +
+    r"$R^2 = {:.4f}$".format(r_squared)
+)
+
+# Place on top-right
+plt.text(0.95, 0.95, eq_text,
+         transform=plt.gca().transAxes,
+         fontsize=10,
+         verticalalignment='top',
+         horizontalalignment='right',  # aligns the text box to the right
+         bbox=dict(boxstyle="round", facecolor="white", alpha=0.85))
+
 plt.show()
