@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from matplotlib.patches import Patch
 
-file = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/heatmap_result(200x200)(8).csv"
+file = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/heatmap_result(200x200)(8)(relax).csv"
 
 # Load CSV
 data = pd.read_csv(file, index_col=0)
@@ -79,6 +79,7 @@ plt.pcolormesh(
 # Find maximum keyrate
 # ---------------------------
 max_idx = np.unravel_index(np.nanargmax(keyrate), keyrate.shape)
+print(keyrate.shape)
 
 max_gamma = gamma_range[max_idx[0]]
 max_aldelt = aldelt_range[max_idx[1]]
@@ -92,6 +93,8 @@ plt.scatter(
     edgecolors="black",
     label="Max Keyrate"
 )
+
+print(f"Aldelt range: {np.min(aldelt_range)} → {np.max(aldelt_range)}")
 
 # ---------------------------
 # Plot settings

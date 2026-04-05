@@ -67,7 +67,7 @@ def hterm(n, hatdelt, gamma, qberthresh, n_p):
     bdelt = hatdelt / (1 + hatdelt)
     delta = find_delta(n, 1 - gamma)
 
-    convergence_criteria = 1e-9 #Tolerance for the solution of the convex optimisation to converge
+    convergence_criteria = 1e-6 #Tolerance for the solution of the convex optimisation to converge
 
     # CVXPY variables
     v1   = cp.Variable(nonneg=True)

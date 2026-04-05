@@ -7,7 +7,7 @@ import sys
 sys.path.append("../BB84keyrate/scripts")
 from BB84keyrate import keyrate
 
-n = 10**7
+n = 10**8
 n_p = 100
 qberthresh = 0.025
 esound = 1e-10
