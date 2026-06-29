@@ -1,8 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 # Step 1: Load the CSV file
-file = "/Users/hayleylim/Documents/GitHub/BB84keyrate/Data/tangent_converge_result(40x40)(8)new.csv"
+file = Path(__file__).parent.parent / "Data" / "tangent_converge_result(40x40)(8)new.csv"
 data = pd.read_csv(file)
 
 
@@ -19,5 +20,4 @@ plt.grid(True)
 plt.title(f"Keyrate for {n} rounds")
 
 # Step 4: Show the graph
-plt.savefig("/Users/hayleylim/Desktop/SP3172/tangent(40x40).svg")
 plt.show()

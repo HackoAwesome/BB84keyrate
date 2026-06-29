@@ -3,10 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from matplotlib.patches import Patch
-
-file = "/Users/hayleylim/Documents/GitHub/BB84keyrate/Data/heatmap_result(200x200)(8)(relax).csv"
+from pathlib import Path
 
 # Load CSV
+file = Path(__file__).parent.parent / "Data" / "heatmap_result(200x200)(8)(relax).csv"
 data = pd.read_csv(file, index_col=0)
 
 gamma_range = data.index.astype(float).to_numpy()

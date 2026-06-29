@@ -1,8 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 # Step 1: Load the CSV file
-file = "/Users/hayleylim/Documents/GitHub/BB84keyrate/Data/grid_converge_result(8).csv"
+file = Path(__file__).parent.parent / "Data" / "grid_converge_result(8).csv"
 data = pd.read_csv(file)
 
 n = "$10^8$"
@@ -18,5 +19,4 @@ plt.grid(True)
 plt.title(f"Keyrate for {n} rounds")
 
 # Step 4: Show the graph
-plt.savefig("/Users/hayleylim/Desktop/SP3172/gridconverge.svg")
 plt.show()

@@ -77,6 +77,8 @@ def rateBB84(aldelt, gamma, n, qberthresh, epsEV, epsPA):
 
     sol_val, sol = htermBB84(hatdelt, gamma, qberthresh)
 
+    v1, v2, perr = sol.x   # <-- extract here
+
     lambdaEC = 1.1 * (1 - gamma) * binh(qberthresh)
 
     rate = (
@@ -90,7 +92,7 @@ def rateBB84(aldelt, gamma, n, qberthresh, epsEV, epsPA):
         )
     )
 
-    return rate, sol
+    return rate, (v1, v2, perr)
 
 # -----------------------
 # Set up n, alpha, gamma values
@@ -112,17 +114,14 @@ def compute_datapoints():
     datapts = []
 
     for ptnum in range(6):
-        # Extract parameters
         n = nvals[ptnum]
         aldelt = aldeltvals[ptnum]
         gamma = gammavals[ptnum]
 
-        # Optimal epsEV and epsPA
         epsEV = (aldelt * esound) / (1 + 2 * aldelt)
         epsPA = esound - epsEV
 
-        # Compute rate
-        rate, sol = rateBB84(
+        rate, (v1, v2, perr) = rateBB84(
             aldelt,
             gamma,
             n,
@@ -131,7 +130,8 @@ def compute_datapoints():
             epsPA
         )
 
-        # Store (n, rate)
+        print(f"n={n:.0e}, v1={v1:.6f}, v2={v2:.6f}, perr={perr:.6f}")
+
         datapts.append((n, rate))
 
     return np.array(datapts)

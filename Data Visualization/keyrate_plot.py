@@ -1,9 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+from pathlib import Path
 
 # Step 1: Load the CSV file
-file = "/Users/hayleylim/Documents/GitHub/BB84keyrate/Data/results(100x100).csv"
+file = Path(__file__).parent.parent / "Data" / "results_new(100x100).csv"
 data = pd.read_csv(file)
 
 n_reference = np.array([10**j for j in range(3, 9)])
@@ -23,4 +24,4 @@ plt.grid(True)
 plt.title("Keyrate against n")
 
 # Step 4: Show the graph
-plt.savefig("/Users/hayleylim/Desktop/SP3172/keyrate(convex only).svg")
+plt.show()

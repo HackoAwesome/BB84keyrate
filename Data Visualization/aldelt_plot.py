@@ -1,9 +1,10 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 # Step 1: Load the CSV file
-file = "/Users/hayleylim/Documents/GitHub/BB84keyrate/Data/results(100x100).csv"
+file = Path(__file__).parent.parent / "Data" / "results_new(100x100).csv"
 data = pd.read_csv(file)
 
 x = data["n"].values
@@ -82,5 +83,4 @@ plt.text(0.95, 0.95, eq_text,
          bbox=dict(boxstyle="round", facecolor="white", alpha=0.85))
 
 # Step 4: Show the graph
-plt.savefig("/Users/hayleylim/Desktop/SP3172/aldeltplot.svg")
 plt.show()
