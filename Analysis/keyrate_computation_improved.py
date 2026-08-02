@@ -5,7 +5,7 @@ import pandas as pd
 
 import sys
 sys.path.append("../BB84keyrate/scripts")
-from BB84keyrate_new import rateBB84
+from BB84keyrate_improved import rateBB84
 
 # -----------------------
 # Compute data points
@@ -42,8 +42,8 @@ nvals = np.array([10**j for j in range(3, 9)])
 qberthresh = 0.025
 esound = 1e-10
 n_ref_p = 100     #number of tangent lines for underestimator
-n_sam_gamma = 100  #number of sample points for gamma (original used 25)
-n_sam_aldelt = 100 #number of sample points for aldelt (original used 40)
+n_sam_gamma = 10  #number of sample points for gamma (original used 25)
+n_sam_aldelt = 10 #number of sample points for aldelt (original used 40)
 file_path = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/results.csv"
 # -----------------------
 # Run computation
