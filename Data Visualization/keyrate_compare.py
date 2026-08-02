@@ -4,11 +4,11 @@ import numpy as np
 from pathlib import Path
 
 # Step 1: Load the first CSV file
-file1 = Path(__file__).parent.parent / "Data" / "results(100x100).csv"
+file1 = Path(__file__).parent.parent / "Data" / "results.csv"
 data1 = pd.read_csv(file1)
 
 # Step 1: Load the second CSV file
-file2 = Path(__file__).parent.parent / "Data" / "results_new(100x100).csv"
+file2 = Path(__file__).parent.parent / "Data" / "results2.csv"
 data2 = pd.read_csv(file2)
 
 n_reference = np.array([10**j for j in range(3, 9)])
