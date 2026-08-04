@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from functools import partial
 import pandas as pd
+from pathlib import Path
 
 import sys
 sys.path.append("../BB84keyrate/scripts")
@@ -12,7 +13,7 @@ n_p = 100
 qberthresh = 0.025
 esound = 1e-10
 grid_n = 200
-file_path = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/heatmap_result.csv"
+file_path = Path(__file__).parent.parent / "Data" / "heatmap_result.csv"
 
 gamma_range = 10 ** (-np.linspace(0, 2.5, grid_n))
 aldelt_range = 10 ** (-np.linspace(np.log10(np.sqrt(n))-2, np.log10(np.sqrt(n))+2, grid_n))

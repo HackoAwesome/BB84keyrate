@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from functools import partial
 import pandas as pd
+from pathlib import Path
 
 import sys
 sys.path.append("../BB84keyrate/scripts")
@@ -38,7 +39,7 @@ esound = 1e-10
 p_range = np.arange(0, 150, 2)     #number of tangent lines for underestimator
 n_sam_gamma = 40  #number of sample points for gamma (minimally 25 to attain better results than original)
 n_sam_aldelt = 40 #number of sample points for aldelt (minimally 40 to attain better results than original)
-file_path = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/tangent_converge_result.csv"
+file_path = Path(__file__).parent.parent / "Data" / "results.csv"
 # -----------------------
 # Run computation
 # -----------------------

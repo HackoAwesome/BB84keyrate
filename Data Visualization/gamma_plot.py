@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 # Step 1: Load the CSV file
-file = Path(__file__).parent.parent / "Data" / "results.csv"
+file = Path(__file__).parent.parent / "Data" / "results_sixstate(100x100).csv"
 data = pd.read_csv(file)
 
 y = data["gamma"].values

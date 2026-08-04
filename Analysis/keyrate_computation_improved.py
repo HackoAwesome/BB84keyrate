@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from functools import partial
 import pandas as pd
+from pathlib import Path
 
 import sys
 sys.path.append("../BB84keyrate/scripts")
@@ -44,7 +45,7 @@ esound = 1e-10
 n_ref_p = 100     #number of tangent lines for underestimator
 n_sam_gamma = 10  #number of sample points for gamma (original used 25)
 n_sam_aldelt = 10 #number of sample points for aldelt (original used 40)
-file_path = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/results.csv"
+file_path = Path(__file__).parent.parent / "Data" / "results.csv"
 # -----------------------
 # Run computation
 # -----------------------

@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from functools import partial
 import pandas as pd
+from pathlib import Path
 
 import sys
 sys.path.append("../BB84keyrate/scripts")
@@ -37,7 +38,7 @@ qberthresh = 0.025
 esound = 1e-10
 n_ref_p = 100     #number of tangent lines for underestimator
 n_range = np.arange(0, 100, 10)  #size of grid (nxn)
-file_path = "/Users/junhui/Desktop/SP3172/BB84keyrate/Data/grid_converge_result.csv"
+file_path = Path(__file__).parent.parent / "Data" / "grid_converge_result.csv"
 # -----------------------
 # Run computation
 # -----------------------
