@@ -5,7 +5,7 @@ import sys
 
 import sys
 sys.path.append("../BB84keyrate/scripts")
-from entropic_terms import find_delta
+from BB84keyrate import find_delta
 
 # -----------------------
 # Binary entropy (numeric)
@@ -120,7 +120,7 @@ def htermBB84(n, hatdelt, gamma, qberthresh, n_p):
     prob = cp.Problem(objective, constraints)
     prob.solve(
         solver=cp.MOSEK,
-        verbose=True,
+        verbose=False,
         mosek_params={
             "MSK_DPAR_INTPNT_CO_TOL_PFEAS": 1e-9,
             "MSK_DPAR_INTPNT_CO_TOL_DFEAS": 1e-9,
@@ -154,6 +154,9 @@ def rateBB84(aldelt, gamma, n, qberthresh, epsEV, epsPA, n_p):
     hatdelt = aldelt / (1 - aldelt)
 
     sol_val, sol = htermBB84(n, hatdelt, gamma, qberthresh, n_p)
+
+    print(n)
+    print(sol)
 
     lambdaEC = 1.1 * (1 - gamma) * binh(qberthresh)
 

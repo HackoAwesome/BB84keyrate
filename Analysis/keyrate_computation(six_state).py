@@ -6,7 +6,7 @@ from pathlib import Path
 
 import sys
 sys.path.append("../BB84keyrate/scripts")
-from sixstate_keyrate import rate_sixstate1, rate_sixstate2
+from sixstate_keyrate import rate_sixstate1, rate_sixstate2, rate_sixstate3
 
 # -----------------------
 # Compute data points
@@ -43,8 +43,8 @@ nvals = np.array([10**j for j in range(3, 9)])
 qberthresh = 0.025
 esound = 1e-10
 n_ref_p = 100     #number of tangent lines for underestimator
-n_sam_gamma = 10  #number of sample points for gamma (original used 25)
-n_sam_aldelt = 10 #number of sample points for aldelt (original used 40)
+n_sam_gamma = 100  #number of sample points for gamma (original used 25)
+n_sam_aldelt = 100 #number of sample points for aldelt (original used 40)
 file_path1 = Path(__file__).parent.parent / "Data" / "results.csv"
 file_path2 = Path(__file__).parent.parent / "Data" / "results2.csv"
 
@@ -55,7 +55,7 @@ print("Computing the first formula")
 datapts1 = compute_datapoints(nvals, qberthresh, esound, rate_sixstate1)
 print("Computation completed for first formula")
 print("Computing the formula formula")
-datapts2 = compute_datapoints(nvals, qberthresh, esound, rate_sixstate2)
+datapts2 = compute_datapoints(nvals, qberthresh, esound, rate_sixstate3)
 print("Computation completed for second formula")
 
 # -----------------------
