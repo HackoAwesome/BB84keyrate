@@ -52,7 +52,7 @@ Each script contains the relevant protocol parameters and entropy expressions us
 To evaluate the key rate for a particular protocol, run the corresponding Python script:
 
 ```bash
-python keyrate_computation.py
+python Analysis/keyrate_computation.py
 ```
 
 with the appropriate script file. The resulting key-rate data will then be plotted as a function of the number of signals.
@@ -104,7 +104,7 @@ The scripts produce numerical key-rate results for different numbers of signals.
 
 The EB-BB84 key-rate calculation is based on the theoretical results presented in:
 
-**A. Arqand et al., "..." (2025).**
+**A. Arqand et al., "Generalized Rényi entropy accumulation theorem and generalized quantum probability estimation" (2025).**
 
 [arXiv:2405.05912](https://arxiv.org/abs/2405.05912)
 
