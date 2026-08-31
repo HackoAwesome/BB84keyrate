@@ -25,9 +25,8 @@ rect = Rectangle(
     (10**3, 0),
     10**4 - 10**3,
     0.7,
-    linewidth=2,
-    edgecolor='red',
-    facecolor='none'
+    facecolor='red',
+    alpha = 0.4
 )
 
 ax.add_patch(rect)

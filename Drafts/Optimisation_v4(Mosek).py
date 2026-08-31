@@ -1,6 +1,7 @@
 import numpy as np
 import cvxpy as cp
 import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
 import sys
 
 import sys
@@ -213,15 +214,34 @@ n_vals = datapts[:, 0]
 rates  = datapts[:, 1]
 rates_reference = [0.0302146, 0.383833, 0.52904, 0.592656, 0.621459, 0.634525]
 
-plt.figure()
-plt.plot(n_vals, rates_reference, marker='o', color='r', label="Original (Computed by Arqand et al.)")
-plt.plot(n_vals, rates, marker='o', color='b', label="New (With Convex Optimisation)")
+fig, ax = plt.subplots()
+
+# Step 2: Plot the data
+ax.plot(n_vals, rates_reference, marker='o', color='purple', label="Original (Computed by Arqand et al.)")
+ax.plot(n_vals, rates, marker='o', color='b', label="New (With Convex Optimisation)")
+
 plt.axhline(y=0.6627, linestyle="--", label = "Asymptotic rate", color = "black") #bb84 asymptotic rate
 
-plt.legend()
+# Rectangle: (x_start, y_start), width, height
+rect = Rectangle(
+    (10**3, 0),
+    10**4 - 10**3,
+    0.7,
+    facecolor='red',
+    alpha = 0.4
+)
+
+ax.add_patch(rect)
+
+# Step 3: Add labels and title
+plt.legend(fontsize='small')
 plt.xscale('log')
 plt.ylim(0, 0.7)
-plt.xlabel('Number of Rounds')
+plt.xlabel('Number of rounds (n)')
 plt.ylabel('Keyrate')
 plt.grid(True)
+plt.title("Keyrate against n")
+
+# Step 4: Show the graph
+plt.savefig("keyrate_plot.svg", format="svg", bbox_inches="tight")
 plt.show()
