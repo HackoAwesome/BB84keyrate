@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 # Step 1: Load the CSV file
-file = Path(__file__).parent.parent / "Data" / "results_new(100x100).csv"
+file = Path(__file__).parent.parent / "Data" / "results_sixstate(100x100).csv"
 data = pd.read_csv(file)
 
 x = data["n"].values
@@ -46,10 +46,11 @@ y_fit_sorted = a * x_fit_sorted**slope
 
 # Step 6: Plot data with error bars
 plt.figure(figsize=(7,5))
-plt.errorbar(x, y, yerr=y_err,
-             fmt='o', markersize=4,
-             color='red', ecolor='gray',
-             capsize=3, label="Data")
+plt.plot(x, y,
+         'o',
+         markersize=4,
+         color='red',
+         label="Data")
 
 # Plot regression line
 plt.plot(x_fit_sorted, y_fit_sorted, color='blue', label="Fit")
@@ -83,5 +84,5 @@ plt.text(0.95, 0.95, eq_text,
          bbox=dict(boxstyle="round", facecolor="white", alpha=0.85))
 
 # Step 4: Show the graph
-plt.savefig("alpha.svg", format="svg", bbox_inches="tight")
+plt.savefig("alpha2.svg", format="svg", bbox_inches="tight")
 plt.show()

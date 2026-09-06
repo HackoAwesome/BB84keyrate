@@ -5,7 +5,7 @@ from matplotlib.patches import Rectangle
 import sys
 
 import sys
-sys.path.append("../BB84keyrate/scripts")
+sys.path.append("../QKDkeyrate/scripts")
 from BB84keyrate import find_delta
 
 # -----------------------
@@ -224,8 +224,8 @@ plt.axhline(y=0.6627, linestyle="--", label = "Asymptotic rate", color = "black"
 
 # Rectangle: (x_start, y_start), width, height
 rect = Rectangle(
-    (10**3, 0),
-    10**4 - 10**3,
+    (10**2, 0),
+    10**4 - 10**2,
     0.7,
     facecolor='red',
     alpha = 0.4
@@ -237,6 +237,7 @@ ax.add_patch(rect)
 plt.legend(fontsize='small')
 plt.xscale('log')
 plt.ylim(0, 0.7)
+plt.xlim(0.5*10**3, 0.2*10**9)
 plt.xlabel('Number of rounds (n)')
 plt.ylabel('Keyrate')
 plt.grid(True)

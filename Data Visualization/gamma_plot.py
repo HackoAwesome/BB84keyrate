@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 # Step 1: Load the CSV file
-file = Path(__file__).parent.parent / "Data" / "results_new(100x100).csv"
+file = Path(__file__).parent.parent / "Data" / "results_sixstate(100x100).csv"
 data = pd.read_csv(file)
 
 y = data["gamma"].values
@@ -56,10 +56,11 @@ y_fit = a * x_fit**slope
 # Plot data with error bars
 plt.figure(figsize=(6,5))
 
-plt.errorbar(x, y, yerr=y_err, fmt='o',
-             color='red', ecolor='gray',
-             elinewidth=1, capsize=3, markersize=4,
-             label="Data")
+plt.plot(x, y,
+         'o',
+         markersize=4,
+         color='red',
+         label="Data")
 
 # Sort x_fit for clean plotting
 x_fit_sorted = np.sort(x_fit)
@@ -100,5 +101,5 @@ plt.text(0.95, 0.95, eq_text,
          horizontalalignment='right',  # aligns the text box to the right
          bbox=dict(boxstyle="round", facecolor="white", alpha=0.85))
 
-plt.savefig("gamma.svg", format="svg", bbox_inches="tight")
+plt.savefig("gamma2.svg", format="svg", bbox_inches="tight")
 plt.show()
